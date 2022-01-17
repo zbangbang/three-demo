@@ -5,13 +5,15 @@
 <script>
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 let scene,camera,renderer,width,height,controls;
+let meshArray = [];
 export default {
   data() {
     return {
-
+      t0: null,
     }
   },
   mounted() {
+    this.t0 = new Date();
     this.initScene();
     this.animate();
   },
@@ -51,7 +53,7 @@ export default {
       controls.target.set(0, 0, 0);
       controls.minDistance = 100.0;
       controls.maxDistance = 1000.0;
-      controls.update();
+      // controls.update();
 
       // // 渲染
       // renderer.render(scene, camera);
@@ -59,31 +61,52 @@ export default {
 
     // 初始化光源
     initLight() {
-      let point = new THREE.PointLight(0xf76832);
+      let point = new THREE.PointLight(0xff00ff);
       point.position.set(400, 200, 300);
       scene.add(point);
 
       const sphereSize = 100;
       const pointLightHelper = new THREE.PointLightHelper( point, sphereSize );
       scene.add( pointLightHelper );
+
+      //环境光
+      let ambient=new THREE.AmbientLight(0x444444);
+      scene.add(ambient);
     },
 
     // 创建物体
     initObject() {
       let geo = new THREE.SphereGeometry(50, 50, 50);
-      geo.translate(380, 180, 280)
-      let material = new THREE.MeshNormalMaterial();
-
+      let material = new THREE.MeshLambertMaterial({
+        color: 0xff0000,
+        opacity: 0.7,
+        transparent: true,
+        // wireframe: true
+      });
+      // let material = new THREE.MeshPhongMaterial({
+      //   color:0x0000ff,
+      //   specular:0x4488ee,
+      //   shininess:12
+      // });
       const mesh = new THREE.Mesh(geo, material);
+      mesh.translateOnAxis(new THREE.Vector3(2, 1, 1.5), 150)
+      mesh.type = 'sphere_1';
+      meshArray.push(mesh);
       scene.add(mesh);
 
-      const helper = new THREE.BoxHelper( mesh, 0x000000 );
+      const helper = new THREE.BoxHelper( mesh, 0xff0000 );
       scene.add( helper );
     },
 
     animate() {
+      // 找到需要变化的mesh
+      let mesh = meshArray.find(item => item.type === 'sphere_1')
+      let t1 = new Date();
+      let delta = t1 - this.t0;
+      this.t0 = t1;
       renderer.render(scene, camera);
       requestAnimationFrame(this.animate);
+      mesh.translateY(0.001 * delta);
     }
   }
 }
