@@ -1,6 +1,16 @@
 <template>
   <div>
-    <init-scene></init-scene>
+    <div class="select_box">
+      <el-select v-model="currentTabComponent" placeholder="请选择">
+        <el-option
+          v-for="item in tabComponentList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
+    <component v-bind:is="currentTabComponent"></component>
   </div>
 </template>
 
@@ -9,14 +19,34 @@
 import * as THREE from "three";
 window.THREE = THREE;
 
-import InitScene from '@/components/01Scene/initScene.vue';
+import InitScene from "@/components/01Scene/initScene.vue";
+import GeometryBox from "@/components/02Geometry/GeometryBox.vue";
 
 export default {
   components: {
     InitScene,
-  }
+    GeometryBox,
+  },
+  data() {
+    return {
+      currentTabComponent: 'GeometryBox',
+      tabComponentList: [{
+        label: '初始化threejs',
+        value: 'InitScene'
+      }, {
+        label: '几何体',
+        value: 'GeometryBox'
+      }]
+    };
+  },
 };
 </script>
 
-<style>
+<style lang='scss' scoped>
+.select_box {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  z-index: 2;
+}
 </style>
