@@ -59,8 +59,8 @@ export default {
 
     // initLight
     initLight() {
-      const point = new THREE.PointLight(0xff00ff)
-      point.position.set(0, 0, 0)
+      const point = new THREE.PointLight(0xffffff, 1, 100)
+      point.position.set(50, 50, 50)
       scene.add(point)
 
       const ambient=new THREE.AmbientLight(0x444444);
@@ -85,17 +85,43 @@ export default {
         0, 0, 0,
         50, 0, 0,
         0, 100, 0,
-        0, 0, 10,
-        50, 0, 10,
-        0, 0, 110,
+        0, 0, 0,
+        50, 0, 0,
+        0, 0, 100,
         // 0, 0, 110,
         // 50, 0, 110,
         // 50, 0, 10,
       ])
       const attribute = new THREE.BufferAttribute(vertices, 3)
-      bufferGeo.attributes.position = attribute
-      const bufferMaterial = new THREE.MeshBasicMaterial({
-        color: 0x0000ff, //三角面颜色
+      bufferGeo.setAttribute('position', attribute)
+
+      // // 顶点颜色缓冲区，需要开启vertexColors属性，开启之后先使用bufferGeo.attributes.color
+      // const colors = new Float32Array([
+      //   1, 0, 0,
+      //   0, 1, 0,
+      //   0, 0, 1,
+
+      //   1, 1, 0,
+      //   0, 1, 1,
+      //   1, 0, 1,
+      // ])
+      // bufferGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+
+      // 法向量缓冲区
+      const normals = new Float32Array([
+        0, 0, 1,
+        0, 0, 1,
+        0, 0, 1,
+
+        0, 1, 0,
+        0, 1, 0,
+        0, 1, 0,
+      ])
+      bufferGeo.setAttribute('normal', new THREE.BufferAttribute(normals, 3))
+
+      const bufferMaterial = new THREE.MeshLambertMaterial({
+        color: 0x00ffff, //三角面颜色
+        // vertexColors: true, // 开启顶点颜色缓冲区
         side: THREE.DoubleSide, //两面可见
       })
 
