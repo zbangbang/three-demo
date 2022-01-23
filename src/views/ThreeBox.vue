@@ -21,21 +21,26 @@ window.THREE = THREE;
 
 import InitScene from "@/components/01Scene/initScene.vue";
 import GeometryBox from "@/components/02Geometry/GeometryBox.vue";
+import GeometryObject from "@/components/04GeometryObject/GeometryObject.vue";
 
 export default {
   components: {
     InitScene,
     GeometryBox,
+    GeometryObject,
   },
   data() {
     return {
-      currentTabComponent: 'GeometryBox',
+      currentTabComponent: 'GeometryObject',
       tabComponentList: [{
         label: '初始化threejs',
         value: 'InitScene'
       }, {
         label: '几何体',
         value: 'GeometryBox'
+      }, {
+        label: '模型对象',
+        value: 'GeometryObject'
       }]
     };
   },
