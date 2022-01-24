@@ -85,12 +85,9 @@ export default {
         0, 0, 0,
         50, 0, 0,
         0, 100, 0,
-        0, 0, 0,
-        50, 0, 0,
+        // 0, 0, 0, // 两个重复点
+        // 50, 0, 0,
         0, 0, 100,
-        // 0, 0, 110,
-        // 50, 0, 110,
-        // 50, 0, 10,
       ])
       const attribute = new THREE.BufferAttribute(vertices, 3)
       bufferGeo.setAttribute('position', attribute)
@@ -113,11 +110,18 @@ export default {
         0, 0, 1,
         0, 0, 1,
 
-        0, 1, 0,
-        0, 1, 0,
+        // 0, 1, 0,
+        // 0, 1, 0,
         0, 1, 0,
       ])
       bufferGeo.setAttribute('normal', new THREE.BufferAttribute(normals, 3))
+
+      // 顶点索引，减少重复点，提高利用率
+      const indexs = new Uint16Array([
+        0, 1, 2,
+        0, 1, 3,
+      ])
+      bufferGeo.setIndex(new THREE.BufferAttribute(indexs, 1))
 
       const bufferMaterial = new THREE.MeshLambertMaterial({
         color: 0x00ffff, //三角面颜色
@@ -125,7 +129,24 @@ export default {
         side: THREE.DoubleSide, //两面可见
       })
 
+      // 改变顶点索引
+      const indexs1 = new Uint16Array([
+        0, 1, 2,
+        0, 2, 3,
+      ])
+      bufferGeo.index = new THREE.BufferAttribute(indexs1, 1)
+
+      // bufferGeo.scale(0.5, 1.5, 2)
+      // console.log('bufferGeo', bufferGeo);
+      // console.log('bufferGeo.attributes.position', bufferGeo.attributes.position);
+      // console.log('bufferGeo.index', bufferGeo.index);
+
       const bufferMesh = new THREE.Mesh(bufferGeo, bufferMaterial)
+      bufferMesh.scale.set(0.5, 1.5, 2)
+      console.log('bufferGeo', bufferGeo);
+      console.log('bufferGeo.attributes.position', bufferGeo.attributes.position);
+      console.log('bufferGeo.index', bufferGeo.index);
+
       scene.add(bufferMesh)
     },
 
