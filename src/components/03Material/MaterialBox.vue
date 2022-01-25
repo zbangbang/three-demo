@@ -4,6 +4,7 @@
 
 <script>
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import ThreeBoxVue from '../../views/ThreeBox.vue';
 let scene, camera, controls, renderer, animationID;
 let point;
 export default {
@@ -69,10 +70,10 @@ export default {
     // initLight
     initLight() {
       const point = new THREE.PointLight(0xffffff, 1, 100);
-      point.position.set(50, 50, 50);
+      point.position.set(30, 30, 30);
       scene.add(point);
 
-      const ambient = new THREE.AmbientLight(0x444444);
+      const ambient = new THREE.AmbientLight(0xffffff);
       scene.add(ambient);
     },
 
@@ -96,20 +97,31 @@ export default {
       // point = new THREE.Points(geometry, material)
 
       // 线材质
-      const points = []
-      points.push(new THREE.Vector3( -100, 0, 0 ))
-      points.push(new THREE.Vector3( 0, 100, 0 ))
-      points.push(new THREE.Vector3( 0, 0, 100 ))
-      const geometry = new THREE.BufferGeometry().setFromPoints(points);
-      const material = new THREE.LineDashedMaterial({
-        color: 0x0000ff,
-        dashSize: 2, //显示线段的大小。默认为3。
-        gapSize: 5, //间隙的大小。默认为1
-      });
-      const line = new THREE.Line(geometry, material);
-      line.computeLineDistances();
+      // const points = []
+      // points.push(new THREE.Vector3( -100, 0, 0 ))
+      // points.push(new THREE.Vector3( 0, 100, 0 ))
+      // points.push(new THREE.Vector3( 0, 0, 100 ))
+      // const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      // const material = new THREE.LineDashedMaterial({
+      //   color: 0x0000ff,
+      //   dashSize: 2, //显示线段的大小。默认为3。
+      //   gapSize: 5, //间隙的大小。默认为1
+      // });
+      // const line = new THREE.Line(geometry, material);
+      // line.computeLineDistances();
 
-      scene.add(line);
+      // 网格材质
+      const planeGeometry = new THREE.PlaneGeometry(30, 30)
+      const planeMaterial = new THREE.MeshLambertMaterial({
+        color: 0x00aa00,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.5
+      })
+      // planeGeometry.lookAt(new THREE.Vector3(0, 1, 0))
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial)
+
+      scene.add(plane);
     },
 
     // render

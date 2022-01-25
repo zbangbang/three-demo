@@ -5,12 +5,16 @@
 <script>
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 let scene,camera,controls,renderer;
+let boxMesh;
 export default {
   data() {
     return {
       // 内容区域宽高
       width: 0,
       height: 0,
+
+      // 前一时刻时间
+      lastTime: Date.now(),
     }
   },
   mounted() {
@@ -95,13 +99,29 @@ export default {
         color: 0x0000ff,
         // wireframe: true,
       })
-      const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial)
+      boxMesh = new THREE.Mesh(boxGeometry, boxMaterial)
+      boxMesh.scale.set(1.5, 2, 3)
+      boxMesh.position.set(-50, 50, 0)
+      const axisPos = new THREE.Vector3(1, 1, 1)
+      axisPos.normalize()
+      boxMesh.translateOnAxis(axisPos, 10)
+      // boxMesh.rotateOnAxis(axisPos, -Math.PI / 6)
       scene.add(boxMesh)
       console.log(boxMesh.material.wireframe);
     },
 
     // render
     render() {
+      /* -----旋转start----- */
+      // const time = Date.now()
+      // const axisPos = new THREE.Vector3(1, 1, 1)
+      // axisPos.normalize()
+      // if (time - this.lastTime > 10) {
+      //   this.lastTime = time
+      //   boxMesh.rotateOnAxis(axisPos, -Math.PI / 6)
+      // }
+      /* -----旋转end----- */
+
       renderer.render(scene, camera)
     },
     // 更新渲染
